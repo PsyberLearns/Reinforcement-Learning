@@ -141,7 +141,7 @@ def learn(env,
     target_q_value = rew_t_ph + (1 - done_mask_ph) * gamma * tf.reduce_max(target_q, axis=1)
     
     #compute total error 
-    total_error = 0.5 * tf.reduce_sum(tf.square(cur_q_value - tf.stop_gradient(target_q_value)))
+    total_error = tf.reduce_sum(tf.squared_difference(cur_q_value, target_q_value))
 
     #get variables
     q_func_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope="cur_q_func")
@@ -225,7 +225,7 @@ def learn(env,
             action = random.randint(0, num_actions-1)
         else:
             obs = replay_buffer.encode_recent_observation()
-            actions = session.run(cur_q, feed_dict={obs_t_float:[obs]})
+            actions = session.run(cur_q, feed_dict={obs_t_ph:[obs]})
             action = np.argmax(actions)
         
         observation, reward, done, info = env.step(action)
@@ -301,8 +301,8 @@ def learn(env,
 
             #train the model(target network and learning q network)
             session.run(train_fn, feed_dict={
-                obs_t_float: obs_batch,
-                obs_tp1_float: next_obs_batch,
+                obs_t_ph: obs_batch,
+                obs_tp1_ph: next_obs_batch,
                 act_t_ph: act_batch,
                 rew_t_ph: rew_batch,
                 done_mask_ph: done_mask,

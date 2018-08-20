@@ -51,7 +51,7 @@ class CartPoleQLearner:
             done = False
             score = 0
             for timeStep in range(self.timeSteps):
-                #self.env.render()
+                self.env.render()
                 action = self.chooseAction(observation, e)
                 newObservation, reward, done, info = self.env.step(action)
                 newObservation = self.discretize(newObservation)

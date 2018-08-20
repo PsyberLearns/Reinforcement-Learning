@@ -110,7 +110,7 @@ def get_env(task, seed):
     set_global_seeds(seed)
     env.seed(seed)
 
-    expt_dir = '/tmp/hw3_vid_dir2/'
+    expt_dir = 'scores/hw3_vid_dir2/'
     env = wrappers.Monitor(env, osp.join(expt_dir, "gym"), force=True)
     env = wrap_deepmind(env)
 
@@ -121,7 +121,11 @@ def main():
     benchmark = gym.benchmark_spec('Atari40M')
 
     # Change the index to select a different game.
-    task = benchmark.tasks[3]
+    task = benchmark.tasks[1]
+    print("=" * 130)
+    print(task)
+    print("=" * 130)
+    
 
     # Run training
     seed = 0 # Use a seed of zero (you may want to randomize the seed!)
